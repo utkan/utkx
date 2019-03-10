@@ -1,5 +1,8 @@
 package io.utkan.marvel.domain.interactor
 
+import javax.inject.Inject
+import javax.inject.Singleton
+
 @Singleton
 class TimeStampProvider @Inject constructor() {
 
