@@ -2,7 +2,6 @@ package io.utkan.marvel.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.utkan.marvel.domain.interactor.CharacterViewTracker
 import io.utkan.marvel.domain.interactor.GetCharacters
@@ -15,26 +14,17 @@ class CharactersViewModel @Inject constructor(
     private val tracker: CharacterViewTracker,
     application: Application
 ) : AndroidViewModel(application) {
-
-    private val _viewState = MutableLiveData<ViewState>()
-    private var state: ViewState?
-        get() = _viewState.value
-        set(value) {
-            if (_viewState.value != value) {
-                _viewState.value = value
-            }
-        }
+    val viewState: MutableLiveData<ViewState> = MutableLiveData()
     private var cancel: () -> Unit by Delegates.notNull()
 
-    val viewState: LiveData<ViewState> = _viewState
 
     init {
-        state = ViewState.Loading(false)
-        getCharacters.execute(
+        viewState.postValue(ViewState.Loading(false))
+        cancel = getCharacters.execute(
             { throwable ->
-                _viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
+                viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
             }, { results ->
-                _viewState.postValue(
+                viewState.postValue(
                     ViewState.CharacterList(
                         results.map { it.toViewModel() },
                         true
@@ -53,9 +43,9 @@ class CharactersViewModel @Inject constructor(
         cancel = getCharacters.execute(
             12,
             { throwable ->
-                _viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
+                viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
             }, { results ->
-                _viewState.postValue(ViewState.CharacterList(results.map {
+                viewState.postValue(ViewState.CharacterList(results.map {
                     it.toViewModel { detailUrl ->
                         tracker.track(it.id)
                         showDetail(detailUrl)
@@ -66,11 +56,21 @@ class CharactersViewModel @Inject constructor(
     }
 
     fun onImageClosed() {
-        state = ViewState.CloseDetail(false)
+        viewState.postValue(ViewState.CloseDetail(false))
+    }
+
+    fun onBackPressed(): Boolean {
+        return when (viewState.value) {
+            is ViewState.CharacterDetail -> {
+                onImageClosed()
+                true
+            }
+            else -> false
+        }
     }
 
     private fun showDetail(detailUrl: String) {
-        state = ViewState.CharacterDetail(detailUrl, false)
+        viewState.value = ViewState.CharacterDetail(detailUrl, false)
     }
 
     private fun CharacterDomain.toViewModel(action: ((String) -> Unit)? = null): CharacterViewModel {

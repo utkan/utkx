@@ -30,9 +30,7 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
             holder.characterName.text = model.name
             Glide.with(holder.view).load(model.thumbnail).into(holder.characterImage)
             holder.characterImage.setOnClickListener {
-                if (model.action != null) {
-                    model.action?.invoke(model.detailImageUrl)
-                }
+                model.action?.invoke(model.detailImageUrl)
             }
         }
     }
