@@ -13,13 +13,21 @@ class GetCharacters @Inject constructor(
     private val charactersRemoteRepository: CharactersRemoteRepository,
     @Named("publicKey") private val apiKey: ByteArray,
     @Named("privateKey") private val privateKey: ByteArray,
-    @Named("defaultLimit") private val limit: Int,
+    @Named("defaultLimit") private val defaultLimit: Int,
     private val timeStampProvider: TimeStampProvider,
     private val hashCalculator: HashCalculator,
     private val characterDomainMapper: CharacterDomainMapper
 ) :
     UseCase {
     override fun execute(
+        failure: (Throwable) -> Unit,
+        success: (List<CharacterDomain>) -> Unit
+    ): () -> Unit {
+        return execute(defaultLimit, failure, success)
+    }
+
+    override fun execute(
+        limit: Int,
         failure: (Throwable) -> Unit,
         success: (List<CharacterDomain>) -> Unit
     ): () -> Unit {
@@ -40,8 +48,8 @@ class GetCharacters @Inject constructor(
                 onFailure = {
                     failure(it)
                 },
-                onSuccess = {
-                    success(it.map { characterDomainMapper.map(it) })
+                onSuccess = { characters ->
+                    success(characters.map { characterDomainMapper.map(it) })
                 }
             )
         )

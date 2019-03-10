@@ -7,4 +7,10 @@ interface UseCase {
         failure: (Throwable) -> Unit,
         success: (List<CharacterDomain>) -> Unit
     ): () -> Unit
+
+    fun execute(
+        limit: Int,
+        failure: (Throwable) -> Unit,
+        success: (List<CharacterDomain>) -> Unit
+    ): () -> Unit
 }

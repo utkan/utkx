@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.utkan.marvel.presentation.CharacterViewModel
@@ -12,6 +13,10 @@ import io.utkan.marvelui.R
 class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder>() {
 
     var characterList: List<CharacterViewModel>? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
         val view =
@@ -23,12 +28,19 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
 
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
         val character = characterList?.get(position)
-        character?.let {
-            Glide.with(holder.view).load(it.thumbnail).into(holder.characterImage)
+        character?.let {model->
+            holder.characterName.text = model.name
+            Glide.with(holder.view).load(model.thumbnail).into(holder.characterImage)
+            holder.characterImage.setOnClickListener{
+                if (model.action != null) {
+                    model.action?.invoke(model.detailImageUrl)
+                }
+            }
         }
     }
 
     inner class CharactersViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         var characterImage: ImageView = view.findViewById(R.id.character_image)
+        var characterName: TextView = view.findViewById(R.id.character_name)
     }
 }

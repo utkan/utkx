@@ -11,11 +11,16 @@ class CharacterDomainMapper @Inject constructor() : ModelMapper<CharacterData, C
         return CharacterDomain(
             id = entity.id,
             name = entity.name,
-            thumbnail = entity.thumbnail.toUrl()
+            thumbnail = entity.thumbnail.toUrl(),
+            detailImageUrl = entity.thumbnail.toDetailUrl()
         )
     }
 
     private fun ThumbnailData.toUrl(): String {
         return path + "/" + StandardImageVariants.Large.variantName + "." + extension
+    }
+
+    private fun ThumbnailData.toDetailUrl(): String {
+        return path + "/" + StandardImageVariants.Fantastic.variantName + "." + extension
     }
 }
