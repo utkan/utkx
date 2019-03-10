@@ -7,6 +7,7 @@ import dagger.android.AndroidInjectionModule
 import io.utkan.marvelui.MarvelApplication
 import io.utkan.marvelui.di.module.ApplicationModule
 import io.utkan.marvelui.di.module.DomainModule
+import io.utkan.marvelui.di.module.PresentationModule
 import io.utkan.marvelui.di.module.RemoteModule
 import javax.inject.Singleton
 
@@ -16,7 +17,8 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         ApplicationModule::class,
         RemoteModule::class,
-        DomainModule::class
+        DomainModule::class,
+        PresentationModule::class
     )
 )
 interface ApplicationComponent {

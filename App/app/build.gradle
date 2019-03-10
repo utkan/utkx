@@ -36,6 +36,8 @@ dependencies {
     def mobileUiTestDependencies = rootProject.ext.mobileUiTestDependencies
     def mobileUiAndroidTestDependencies = rootProject.ext.mobileUiAndroidTestDependencies
 
+    implementation project(':presentation')
+
     // TODO: remove these dependencies and configure dagger in its own module
     implementation project(':remote')
     implementation project(':data')
