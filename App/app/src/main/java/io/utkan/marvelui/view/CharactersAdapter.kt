@@ -5,18 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.utkan.marvel.presentation.CharacterViewModel
 import io.utkan.marvelui.R
 
+
 class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewHolder>() {
 
-    var characterList: List<CharacterViewModel>? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    var characterList: MutableList<CharacterViewModel>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharactersViewHolder {
         val view =
@@ -37,6 +35,15 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
                 }
             }
         }
+    }
+
+    fun updateList(characters: List<CharacterViewModel>) {
+        val diffCallback = CharactersDiffCallback(characters, this.characterList?.toList()!!)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
+        this.characterList?.clear()
+        this.characterList?.addAll(characters)
+        diffResult.dispatchUpdatesTo(this)
     }
 
     inner class CharactersViewHolder(val view: View) : RecyclerView.ViewHolder(view) {

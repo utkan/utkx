@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import io.utkan.marvel.domain.interactor.CharacterViewTracker
 import io.utkan.marvel.domain.interactor.GetCharacters
 import io.utkan.marvel.domain.model.CharacterDomain
 import javax.inject.Inject
@@ -11,6 +12,7 @@ import kotlin.properties.Delegates
 
 class CharactersViewModel @Inject constructor(
     private val getCharacters: GetCharacters,
+    private val tracker: CharacterViewTracker,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -55,7 +57,7 @@ class CharactersViewModel @Inject constructor(
             }, { results ->
                 _viewState.postValue(ViewState.CharacterList(results.map {
                     it.toViewModel { detailUrl ->
-                        // track
+                        tracker.track(it.id)
                         showDetail(detailUrl)
                     }
                 }, false))

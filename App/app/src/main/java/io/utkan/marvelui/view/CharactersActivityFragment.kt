@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_characters.*
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
+
 class CharactersActivityFragment : Fragment() {
 
     @Inject
@@ -35,7 +36,7 @@ class CharactersActivityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         charactersAdapter = CharactersAdapter()
-        charactersAdapter.characterList = emptyList()
+        charactersAdapter.characterList = mutableListOf()
         list.adapter = charactersAdapter
         go_to_categories.setOnClickListener {
             charactersViewModel.onGotoCategories()
@@ -63,7 +64,8 @@ class CharactersActivityFragment : Fragment() {
                     }
                     is CharactersViewModel.ViewState.CharacterList -> {
                         changeGoToCategoriesButtonVisibility(it.categoriesEnabled)
-                        charactersAdapter.characterList = it.characters
+//                        charactersAdapter.characterList = it.characters
+                        charactersAdapter.updateList(it.characters)
                     }
                     is CharactersViewModel.ViewState.CharacterDetail -> {
                         it.url?.let { url ->

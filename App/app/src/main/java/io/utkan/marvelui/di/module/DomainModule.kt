@@ -3,6 +3,8 @@ package io.utkan.marvelui.di.module
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import io.utkan.marvel.domain.interactor.CharacterViewTracker
+import io.utkan.marvel.domain.interactor.CharacterViewTrackerImpl
 import io.utkan.marvel.domain.interactor.GetCharacters
 import io.utkan.marvel.domain.interactor.UseCase
 import javax.inject.Named
@@ -11,6 +13,9 @@ import javax.inject.Named
 abstract class DomainModule {
     @Binds
     abstract fun bindGetCharacters(getCharacters: GetCharacters): UseCase
+
+    @Binds
+    abstract fun bindCharacterViewTracker(characterViewTracker: CharacterViewTrackerImpl): CharacterViewTracker
 
     @Module
     companion object {

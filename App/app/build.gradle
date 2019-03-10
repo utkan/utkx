@@ -58,6 +58,7 @@ dependencies {
     implementation mobileUiDependencies.converterMoshi
     implementation mobileUiDependencies.moshiKotlin
     implementation mobileUiDependencies.glide
+    implementation mobileUiDependencies.room
     kapt mobileUiDependencies.daggerCompiler
     kapt mobileUiDependencies.daggerProcessor
     compileOnly mobileUiDependencies.glassfishAnnotation
