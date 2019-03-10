@@ -79,7 +79,8 @@ class CharactersViewModel @Inject constructor(
             name = name,
             thumbnail = thumbnail,
             action = action,
-            detailImageUrl = detailImageUrl
+            detailImageUrl = detailImageUrl,
+            viewCount = viewCount
         )
     }
 

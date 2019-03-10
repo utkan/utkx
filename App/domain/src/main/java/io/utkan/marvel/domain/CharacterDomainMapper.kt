@@ -12,7 +12,8 @@ class CharacterDomainMapper @Inject constructor() : ModelMapper<CharacterData, C
             id = entity.id,
             name = entity.name,
             thumbnail = entity.thumbnail.toUrl(),
-            detailImageUrl = entity.thumbnail.toDetailUrl()
+            detailImageUrl = entity.thumbnail.toDetailUrl(),
+            viewCount = entity.viewCount
         )
     }
 

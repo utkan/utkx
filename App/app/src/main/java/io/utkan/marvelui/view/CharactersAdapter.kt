@@ -26,10 +26,10 @@ class CharactersAdapter : RecyclerView.Adapter<CharactersAdapter.CharactersViewH
 
     override fun onBindViewHolder(holder: CharactersViewHolder, position: Int) {
         val character = characterList?.get(position)
-        character?.let {model->
+        character?.let { model ->
             holder.characterName.text = model.name
             Glide.with(holder.view).load(model.thumbnail).into(holder.characterImage)
-            holder.characterImage.setOnClickListener{
+            holder.characterImage.setOnClickListener {
                 if (model.action != null) {
                     model.action?.invoke(model.detailImageUrl)
                 }

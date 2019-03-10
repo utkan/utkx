@@ -2,6 +2,7 @@ package io.utkan.marvel.data.character
 
 
 import io.utkan.marvel.data.ModelMapper
+import io.utkan.marvel.data.character.db.AppDatabase
 import io.utkan.marvel.data.model.CharacterData
 import io.utkan.marvel.remote.character.CharactersRemote
 import io.utkan.marvel.remote.character.GetCharactersParameters
@@ -12,7 +13,8 @@ import javax.inject.Named
 class CharactersRemoteRepositoryImpl @Inject constructor(
     private val charactersRemote: CharactersRemote,
     @Named("characterDataMapper")
-    private val characterDataMapper: ModelMapper<@JvmSuppressWildcards Result, @JvmSuppressWildcards CharacterData>
+    private val characterDataMapper: ModelMapper<@JvmSuppressWildcards Result, @JvmSuppressWildcards CharacterData>,
+    private val appDatabase: AppDatabase
 ) : CharactersRemoteRepository {
     override fun getCharacters(getCharactersDataParameters: GetCharactersDataParameters): () -> Unit {
         return charactersRemote.getCharacters(GetCharactersParameters(
@@ -21,11 +23,11 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
             hash = getCharactersDataParameters.hash,
             timeStamp = getCharactersDataParameters.timeStamp,
             onSuccess = { response ->
-                response.takeIf { it.isSuccessful }?.let {
-                    it.body()?.let { body ->
-                        getCharactersDataParameters.onSuccess(body.data.results.map { result ->
-                            characterDataMapper.map(result)
-                        })
+                response.takeIf { it.isSuccessful }?.let { characterResponse ->
+                    characterResponse.body()?.let { body ->
+                        val list =
+                            body.data.results.map { result -> characterDataMapper.map(result) }
+                        getCharactersDataParameters.onSuccess(list.mapViewCount())
                     } ?: getCharactersDataParameters.onFailure(RuntimeException())
                 } ?: getCharactersDataParameters.onFailure(RuntimeException())
             },
@@ -33,5 +35,16 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
                 getCharactersDataParameters.onFailure(it)
             }
         ))
+    }
+
+    private fun List<CharacterData>.mapViewCount(): List<CharacterData> {
+        // find ids in db
+        val viewedCategories = appDatabase.characterViewEntity()
+            .loadCharacterViewByIds(map { model -> model.id })
+        return map { characterData ->
+            val viewCount =
+                viewedCategories?.find { it.id == characterData.id }?.viewCount ?: 0
+            characterData.copy(viewCount = viewCount)
+        }
     }
 }

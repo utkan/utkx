@@ -49,7 +49,7 @@ class GetCharacters @Inject constructor(
                     failure(it)
                 },
                 onSuccess = { characters ->
-                    success(characters.map { characterDomainMapper.map(it) })
+                    success(characters.map { characterDomainMapper.map(it) }.sortedByDescending { it.viewCount })
                 }
             )
         )

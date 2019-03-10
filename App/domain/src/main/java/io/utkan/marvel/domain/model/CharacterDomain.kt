@@ -4,5 +4,6 @@ data class CharacterDomain(
     val id: Int,
     val name: String,
     val thumbnail: String,
-    val detailImageUrl: String
+    val detailImageUrl: String,
+    val viewCount: Int = 0
 )

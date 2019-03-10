@@ -15,6 +15,9 @@ interface CharacterViewDao {
     @Query("select * from CharacterView where id = :id")
     fun loadCharacterViewById(id: Int): CharacterViewEntity?
 
+    @Query("SELECT * FROM CharacterView WHERE id IN (:ids)")
+    fun loadCharacterViewByIds(ids: List<Int>): List<CharacterViewEntity>?
+
     @Insert
     fun insertCharacterViewEntity(characterViewEntity: CharacterViewEntity)
 
