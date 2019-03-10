@@ -32,6 +32,10 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    def mobileUiDependencies = rootProject.ext.mobileUiDependencies
+    def mobileUiTestDependencies = rootProject.ext.mobileUiTestDependencies
+    def mobileUiAndroidTestDependencies = rootProject.ext.mobileUiAndroidTestDependencies
+
     // TODO: remove these dependencies and configure dagger in its own module
     implementation project(':remote')
 
@@ -45,6 +49,10 @@ dependencies {
     implementation mobileUiDependencies.dagger
     implementation mobileUiDependencies.daggerSupport
     implementation mobileUiDependencies.viewModelExtensions
+    implementation mobileUiDependencies.okhttp
+    implementation mobileUiDependencies.retrofit
+    implementation mobileUiDependencies.converterMoshi
+    implementation mobileUiDependencies.moshiKotlin
     kapt mobileUiDependencies.daggerCompiler
     kapt mobileUiDependencies.daggerProcessor
     compileOnly mobileUiDependencies.glassfishAnnotation
