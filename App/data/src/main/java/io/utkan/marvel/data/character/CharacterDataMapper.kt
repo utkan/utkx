@@ -6,7 +6,7 @@ import io.utkan.marvel.data.model.ThumbnailData
 import io.utkan.marvel.remote.model.Result
 import javax.inject.Inject
 
-class CharactersDataMapper @Inject constructor() : ModelMapper<Result, CharacterData> {
+class CharacterDataMapper @Inject constructor() : ModelMapper<Result, CharacterData> {
     override fun map(entity: Result): CharacterData {
         return CharacterData(
             id = entity.id,
