@@ -66,6 +66,24 @@ ext {
     ]
     // endregion
 
+    // region data
+    dataDependencies = [
+            kotlinStdlib      : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinStdlibVersion}",
+            javaxAnnotation   : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject       : "javax.inject:javax.inject:${javaxInjectVersion}",
+            androidAnnotations: "androidx.annotation:annotation:${annotationVersion}",
+            retrofit          : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+    ]
+
+    dataTestDependencies = [
+            junit      : "junit:junit:${junitVersion}",
+            kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
+            assertj    : "org.assertj:assertj-core:${assertJVersion}",
+            mockito    : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}",
+            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+    ]
+    // endregion
+
     // region remote
     remoteDependencies = [
             daggerCompiler    : "com.google.dagger:dagger-compiler:${daggerVersion}",
