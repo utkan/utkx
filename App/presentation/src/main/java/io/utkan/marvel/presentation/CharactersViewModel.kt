@@ -89,7 +89,6 @@ class CharactersViewModel @Inject constructor(
         data class CharacterList(
             val characters: List<CharacterViewModel>,
             val categoriesEnabled: Boolean
-        ) :
-            ViewState()
+        ) : ViewState()
     }
 }

@@ -26,6 +26,7 @@ ext {
     moshiKotlinVersion = '1.8.0'
     kotlinCodegenVersion = '1.8.0'
     glideVersion = '4.9.0'
+    roomVersion = '2.0.0'
     //endregion
 
     //region Testing
@@ -57,7 +58,7 @@ ext {
             retrofit           : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             converterMoshi     : "com.squareup.retrofit2:converter-moshi:${converterMoshiVersion}",
             moshiKotlin        : "com.squareup.moshi:moshi-kotlin:${moshiKotlinVersion}",
-            glide: "com.github.bumptech.glide:glide:${glideVersion}",
+            glide              : "com.github.bumptech.glide:glide:${glideVersion}",
     ]
     mobileUiTestDependencies = [
             junit: "junit:junit:${junitVersion}"
@@ -117,6 +118,8 @@ ext {
             javaxInject       : "javax.inject:javax.inject:${javaxInjectVersion}",
             androidAnnotations: "androidx.annotation:annotation:${annotationVersion}",
             retrofit          : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            room              : "androidx.room:room-runtime:${roomVersion}",
+            roomCompiler      : "androidx.room:room-compiler:${roomVersion}",
     ]
 
     dataTestDependencies = [
@@ -125,6 +128,7 @@ ext {
             assertj    : "org.assertj:assertj-core:${assertJVersion}",
             mockito    : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}",
             robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+            roomTest   : "androidx.room:room-testing:$roomVersion"
     ]
     // endregion
 
@@ -145,11 +149,11 @@ ext {
     ]
 
     remoteTestDependencies = [
-            junit      : "junit:junit:${junitVersion}",
-            kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
-            assertj    : "org.assertj:assertj-core:${assertJVersion}",
-            mockito    : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}",
-            robolectric: "org.robolectric:robolectric:${robolectricVersion}",
+            junit       : "junit:junit:${junitVersion}",
+            kotlinJUnit : "org.jetbrains.kotlin:kotlin-test-junit:${kotlin_version}",
+            assertj     : "org.assertj:assertj-core:${assertJVersion}",
+            mockito     : "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}",
+            robolectric : "org.robolectric:robolectric:${robolectricVersion}",
             testRunner  : "androidx.test:runner:${testRunnerVersion}",
             espressoCore: "androidx.test.espresso:espresso-core:${espressoCoreVersion}",
     ]
