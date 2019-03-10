@@ -1,0 +1,68 @@
+ext {
+    //region Android
+    kotlinStdlibVersion = '1.2.71'
+    androidBuildToolsVersion = "28.0.3"
+    androidMinSdkVersion = 21
+    androidTargetSdkVersion = 28
+    androidCompileSdkVersion = 28
+    kotlinVersion = '1.3.21'
+    //endregion
+
+    //region Libraries
+    appcompatVersion = '1.1.0-alpha02'
+    androidxCoreVersion = '1.1.0-alpha04'
+    lifecycleViewmodelKtxVerion = '2.0.0'
+    constraintlayoutVersion = '1.1.3'
+    materialVersion = '1.1.0-alpha04'
+    daggerVersion = '2.21'
+    javaxAnnotationVersion = '1.0'
+    javaxInjectVersion = '1'
+    glassfishAnnotationVersion = '10.0-b28'
+    annotationVersion = '1.0.0'
+    archCompVersion = '1.1.1'
+    okhttpVersion = '3.13.1'
+    retrofitVersion = '2.5.0'
+    converterMoshiVersion = '2.5.0'
+    moshiKotlinVersion = '1.8.0'
+    kotlinCodegenVersion = '1.8.0'
+    //endregion
+
+    //region Testing
+    junitVersion = '4.12'
+    testRunnerVersion = '1.1.2-alpha01'
+    espressoCoreVersion = '3.1.2-alpha01'
+    assertJVersion = '3.8.0'
+    mockitoKotlinVersion = '2.1.0'
+    robolectricVersion = '3.4.2'
+    //endregion
+
+    // region mobile
+    mobileUiDependencies = [
+            kotlinStdlibJdk7   : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlinVersion}",
+            appcompat          : "androidx.appcompat:appcompat:${appcompatVersion}",
+            androidxCore       : "androidx.core:core-ktx:${androidxCoreVersion}",
+            viewModelExtensions: "androidx.lifecycle:lifecycle-extensions:${lifecycleViewmodelKtxVerion}",
+            constraintlayout   : "androidx.constraintlayout:constraintlayout:${constraintlayoutVersion}",
+            material           : "com.google.android.material:material:${materialVersion}",
+            daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger             : "com.google.dagger:dagger:${daggerVersion}",
+            daggerSupport      : "com.google.dagger:dagger-android-support:${daggerVersion}",
+            daggerProcessor    : "com.google.dagger:dagger-android-processor:${daggerVersion}",
+            javaxAnnotation    : "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
+            javaxInject        : "javax.inject:javax.inject:${javaxInjectVersion}",
+            androidAnnotations : "androidx.annotation:annotation:${annotationVersion}",
+            glassfishAnnotation: "org.glassfish:javax.annotation:${glassfishAnnotationVersion}",
+            okhttp             : "com.squareup.okhttp3:okhttp:${okhttpVersion}",
+            retrofit           : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            converterMoshi     : "com.squareup.retrofit2:converter-moshi:${converterMoshiVersion}",
+            moshiKotlin        : "com.squareup.moshi:moshi-kotlin:${moshiKotlinVersion}",
+    ]
+    mobileUiTestDependencies = [
+            junit: "junit:junit:${junitVersion}"
+    ]
+    mobileUiAndroidTestDependencies = [
+            testRunner  : "androidx.test:runner:${testRunnerVersion}",
+            espressoCore: "androidx.test.espresso:espresso-core:${espressoCoreVersion}"
+    ]
+    // endregion
+}
