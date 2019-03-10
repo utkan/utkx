@@ -31,12 +31,23 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // TODO: remove these dependencies and configure dagger in its own module
+    implementation project(':remote')
+
     implementation mobileUiDependencies.kotlinStdlibJdk7
     implementation mobileUiDependencies.appcompat
     implementation mobileUiDependencies.androidxCore
     implementation mobileUiDependencies.constraintlayout
     implementation mobileUiDependencies.material
+    implementation mobileUiDependencies.javaxAnnotation
+    implementation mobileUiDependencies.androidAnnotations
+    implementation mobileUiDependencies.dagger
+    implementation mobileUiDependencies.daggerSupport
+    implementation mobileUiDependencies.viewModelExtensions
+    kapt mobileUiDependencies.daggerCompiler
+    kapt mobileUiDependencies.daggerProcessor
+    compileOnly mobileUiDependencies.glassfishAnnotation
 
     testImplementation mobileUiTestDependencies.junit
     androidTestImplementation mobileUiAndroidTestDependencies.testRunner
