@@ -11,6 +11,7 @@ interface CharactersService {
         @Query("limit") limit: Int?,
         @Query("apikey") apikey: String,
         @Query("hash") hash: String,
-        @Query("ts") timeStamp: String
+        @Query("ts") timeStamp: String,
+        @Query("orderBy") orderBy: String = "name"
     ): Call<CharactersResponse>
 }

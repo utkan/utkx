@@ -1,9 +1,9 @@
 package io.utkan.marvel.presentation
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.utkan.marvel.domain.interactor.GetCharacters
-import io.utkan.marvel.domain.model.CharacterDomain
 import javax.inject.Inject
 
 class CharactersViewModel @Inject constructor(
@@ -23,11 +23,17 @@ class CharactersViewModel @Inject constructor(
     init {
         state = ViewState.Loading
         getCharacters.execute(
-            {throwable->
+            { throwable ->
                 _viewState.postValue(ViewState.Error(throwable.localizedMessage))
-            },{results->
-//                state = ViewState.CharacterList(results)
-                _viewState.postValue(ViewState.CharacterList(results))
+            }, { results ->
+                //                state = ViewState.CharacterList(results)
+                _viewState.postValue(ViewState.CharacterList(results.map {
+                    CharacterViewModel(
+                        id = it.id,
+                        name = it.name,
+                        thumbnail = it.thumbnail
+                    )
+                }))
             }
         )
     }
@@ -35,6 +41,6 @@ class CharactersViewModel @Inject constructor(
     sealed class ViewState {
         object Loading : ViewState()
         data class Error(val message: String?) : ViewState()
-        data class CharacterList(val characters: List<CharacterDomain>) : ViewState()
+        data class CharacterList(val characters: List<CharacterViewModel>) : ViewState()
     }
 }

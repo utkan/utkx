@@ -8,4 +8,14 @@
     tools:context=".view.CharactersActivityFragment"
     tools:showIn="@layout/activity_characters">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:itemCount="3"
+        android:visibility="visible"
+        tools:listitem="@layout/character_list_item"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

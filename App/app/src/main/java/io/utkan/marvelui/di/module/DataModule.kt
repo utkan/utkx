@@ -8,10 +8,12 @@ import io.utkan.marvel.data.character.CharactersRemoteRepository
 import io.utkan.marvel.data.character.CharactersRemoteRepositoryImpl
 import io.utkan.marvel.data.model.CharacterData
 import io.utkan.marvel.remote.model.Result
+import javax.inject.Named
 
 @Module
 abstract class DataModule {
     @Binds
+    @Named("characterDataMapper")
     abstract fun bindCharactersDataMapperRepository(charactersDataMapper: CharacterDataMapper): ModelMapper<Result, CharacterData>
 
     @Binds

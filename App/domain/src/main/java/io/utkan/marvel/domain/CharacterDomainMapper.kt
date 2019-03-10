@@ -16,6 +16,6 @@ class CharacterDomainMapper @Inject constructor() : ModelMapper<CharacterData, C
     }
 
     private fun ThumbnailData.toUrl(): String {
-        return path + "/" + StandardImageVariants.Medium.dimen + "." + extension
+        return path + "/" + StandardImageVariants.Large.variantName + "." + extension
     }
 }

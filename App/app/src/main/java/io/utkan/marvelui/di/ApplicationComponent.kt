@@ -5,10 +5,7 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import io.utkan.marvelui.MarvelApplication
-import io.utkan.marvelui.di.module.ApplicationModule
-import io.utkan.marvelui.di.module.DomainModule
-import io.utkan.marvelui.di.module.PresentationModule
-import io.utkan.marvelui.di.module.RemoteModule
+import io.utkan.marvelui.di.module.*
 import javax.inject.Singleton
 
 @Singleton
@@ -17,8 +14,11 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         ApplicationModule::class,
         RemoteModule::class,
+        DataModule::class,
         DomainModule::class,
-        PresentationModule::class
+        PresentationModule::class,
+        UiModule::class,
+        FragmentModule::class
     )
 )
 interface ApplicationComponent {

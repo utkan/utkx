@@ -21,6 +21,7 @@ class RemoteModule {
         private val CORE_POOL_SIZE = CPU_COUNT + 1
         private val THREAD_POOL_EXECUTOR = Executors.newFixedThreadPool(CORE_POOL_SIZE)
     }
+
         @Provides
         @Named("baseUrl")
         fun providesBaseUrl() = byteArrayOf(104, 116, 116, 112, 115, 58, 47, 47, 103, 97, 116, 101, 119, 97, 121, 46, 109, 97, 114, 118, 101, 108, 46, 99, 111, 109, 47)

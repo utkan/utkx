@@ -25,6 +25,7 @@ ext {
     converterMoshiVersion = '2.5.0'
     moshiKotlinVersion = '1.8.0'
     kotlinCodegenVersion = '1.8.0'
+    glideVersion = '4.9.0'
     //endregion
 
     //region Testing
@@ -56,6 +57,7 @@ ext {
             retrofit           : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             converterMoshi     : "com.squareup.retrofit2:converter-moshi:${converterMoshiVersion}",
             moshiKotlin        : "com.squareup.moshi:moshi-kotlin:${moshiKotlinVersion}",
+            glide: "com.github.bumptech.glide:glide:${glideVersion}",
     ]
     mobileUiTestDependencies = [
             junit: "junit:junit:${junitVersion}"
