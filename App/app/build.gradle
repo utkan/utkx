@@ -39,6 +39,7 @@ dependencies {
     // TODO: remove these dependencies and configure dagger in its own module
     implementation project(':remote')
     implementation project(':data')
+    implementation project(':domain')
 
     implementation mobileUiDependencies.kotlinStdlibJdk7
     implementation mobileUiDependencies.appcompat
