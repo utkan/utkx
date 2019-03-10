@@ -1,4 +1,4 @@
-package io.utkan.marvel.domain.interactor
+package io.utkan.marvel.domain
 
 import javax.inject.Inject
 import javax.inject.Singleton
