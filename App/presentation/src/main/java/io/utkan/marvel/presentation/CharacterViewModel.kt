@@ -6,5 +6,6 @@ data class CharacterViewModel(
     val thumbnail: String,
     val detailImageUrl: String,
     val viewCount: Int = 0,
+    val spanCount: Int = 1,
     val action: ((String) -> Unit)?
 )

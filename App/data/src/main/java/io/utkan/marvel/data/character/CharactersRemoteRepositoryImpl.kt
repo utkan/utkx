@@ -42,7 +42,6 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
     }
 
     private fun List<CharacterData>.mapViewCount(): List<CharacterData> {
-        // find ids in db
         val viewedCategories = appDatabase.characterViewEntity()
             .loadCharacterViewByIds(map { model -> model.id })
         return map { characterData ->

@@ -33,8 +33,8 @@ class CharactersViewModel @Inject constructor(
             }, { results ->
                 viewState.postValue(
                     ViewState.CharacterList(
-                        results.map {
-                            it.toViewModel {
+                        results.map { characterDomain ->
+                            characterDomain.toViewModel {
                                 noMoreFirstTimeUser {
                                     onGotoCategories()
                                 }
@@ -59,11 +59,26 @@ class CharactersViewModel @Inject constructor(
             { throwable ->
                 viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
             }, { results ->
-                viewState.postValue(ViewState.CharacterList(results.map {
-                    it.toViewModel { detailUrl ->
-                        tracker.track(it.id)
-                        showDetail(detailUrl)
+
+                //TODO: separate this logic to testable class
+                val max = results.map { it.viewCount }.max() ?: 0
+                val list = if (isFirstTimeUser || max == 0) {
+                    results.map { it.toViewModel() }
+                } else {
+                    results.map {
+                        when {
+                            it.viewCount == max -> it.toViewModel().copy(spanCount = 3)
+                            it.viewCount in 1..(max - 1) -> it.toViewModel().copy(spanCount = 2)
+                            else -> it.toViewModel().copy(spanCount = 1)
+                        }
                     }
+                }
+
+                viewState.postValue(ViewState.CharacterList(list.map { characterViewModel ->
+                    characterViewModel.copy(action = { detailUrl ->
+                        tracker.track(characterViewModel.id)
+                        showDetail(detailUrl)
+                    })
                 }, false))
             }
         )
@@ -73,10 +88,8 @@ class CharactersViewModel @Inject constructor(
         viewState.postValue(ViewState.CloseDetail(false))
     }
 
-    fun onBackPressed(): Boolean {
-        return isStateDetail {
-            onImageClosed()
-        }
+    fun onBackPressed() = isStateDetail {
+        onImageClosed()
     }
 
     private inline fun isStateDetail(func: () -> Unit): Boolean {

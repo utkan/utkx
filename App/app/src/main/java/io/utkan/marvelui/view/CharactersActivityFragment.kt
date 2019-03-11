@@ -42,13 +42,20 @@ class CharactersActivityFragment : Fragment() {
         list.adapter = charactersAdapter
         val lookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return when (position and 0x1) {
-                    1 -> 3
-                    else -> 1
+                //TODO: give this logic to view model and create visitor to set span count
+                var spanCount = charactersAdapter.characterList?.get(position)?.spanCount ?: 1
+                if (position > 1 && spanCount > 1) {
+                    val previousSpanCount = charactersAdapter.characterList?.get(position - 1)?.spanCount ?: 1
+                    val nextSpanCount = charactersAdapter.characterList?.get(position + 1)?.spanCount ?: 1 > 1
+                    if (previousSpanCount > 1 || nextSpanCount
+                    ) {
+                        spanCount = 1
+                    }
                 }
+                return spanCount
             }
         }
-//        (list.layoutManager as GridLayoutManager).spanSizeLookup = lookup
+        (list.layoutManager as GridLayoutManager).spanSizeLookup = lookup
         go_to_categories.setOnClickListener {
             charactersViewModel.onGotoCategories()
         }
