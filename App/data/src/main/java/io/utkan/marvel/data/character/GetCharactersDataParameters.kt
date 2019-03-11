@@ -7,6 +7,7 @@ data class GetCharactersDataParameters(
     val apikey: String,
     val hash: String,
     val timeStamp: String,
+    val checkViewCount: Boolean,
     val onFailure: (Throwable) -> Unit,
     val onSuccess: (List<CharacterData>) -> Unit
 )

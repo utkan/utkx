@@ -27,7 +27,11 @@ class CharactersRemoteRepositoryImpl @Inject constructor(
                     characterResponse.body()?.let { body ->
                         val list =
                             body.data.results.map { result -> characterDataMapper.map(result) }
-                        getCharactersDataParameters.onSuccess(list.mapViewCount())
+                        if (getCharactersDataParameters.checkViewCount) {
+                            getCharactersDataParameters.onSuccess(list.mapViewCount())
+                        } else {
+                            getCharactersDataParameters.onSuccess(list)
+                        }
                     } ?: getCharactersDataParameters.onFailure(RuntimeException())
                 } ?: getCharactersDataParameters.onFailure(RuntimeException())
             },

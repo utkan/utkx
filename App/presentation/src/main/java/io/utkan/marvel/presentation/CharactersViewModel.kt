@@ -1,6 +1,7 @@
 package io.utkan.marvel.presentation
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import io.utkan.marvel.domain.interactor.CharacterViewTracker
@@ -12,22 +13,34 @@ import kotlin.properties.Delegates
 class CharactersViewModel @Inject constructor(
     private val getCharacters: GetCharacters,
     private val tracker: CharacterViewTracker,
-    application: Application
-) : AndroidViewModel(application) {
+    val app: Application
+) : AndroidViewModel(app) {
     val viewState: MutableLiveData<ViewState> = MutableLiveData()
     private var cancel: () -> Unit by Delegates.notNull()
-
+    private var isFirstTimeUser: Boolean = true
 
     init {
         viewState.postValue(ViewState.Loading(false))
+
+        isFirstTime {
+            isFirstTimeUser = false
+        }
+
         cancel = getCharacters.execute(
+            isFirstTimeUser,
             { throwable ->
                 viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
             }, { results ->
                 viewState.postValue(
                     ViewState.CharacterList(
-                        results.map { it.toViewModel() },
-                        true
+                        results.map {
+                            it.toViewModel {
+                                noMoreFirstTimeUser {
+                                    onGotoCategories()
+                                }
+                            }
+                        },
+                        isFirstTimeUser.not()
                     )
                 )
             }
@@ -41,6 +54,7 @@ class CharactersViewModel @Inject constructor(
 
     fun onGotoCategories() {
         cancel = getCharacters.execute(
+            isFirstTimeUser,
             12,
             { throwable ->
                 viewState.postValue(ViewState.Error(throwable.localizedMessage, false))
@@ -60,17 +74,47 @@ class CharactersViewModel @Inject constructor(
     }
 
     fun onBackPressed(): Boolean {
-        return when (viewState.value) {
-            is ViewState.CharacterDetail -> {
-                onImageClosed()
-                true
-            }
-            else -> false
+        return isStateDetail {
+            onImageClosed()
         }
+    }
+
+    private inline fun isStateDetail(func: () -> Unit): Boolean {
+        if (viewState.value is ViewState.CharacterDetail) {
+            func()
+            return true
+        }
+        return false
     }
 
     private fun showDetail(detailUrl: String) {
         viewState.value = ViewState.CharacterDetail(detailUrl, false)
+    }
+
+    private inline fun isFirstTime(func: () -> Unit) {
+        val sharedPref =
+            app.applicationContext.getSharedPreferences(
+                SHARED_PREFERENCES_NAME,
+                Context.MODE_PRIVATE
+            )
+        if (sharedPref.getBoolean(FIRST_TIME_KEY, true).not()) {
+            func()
+        }
+    }
+
+    private inline fun noMoreFirstTimeUser(func: () -> Unit) {
+        val sharedPref =
+            app.applicationContext.getSharedPreferences(
+                SHARED_PREFERENCES_NAME,
+                Context.MODE_PRIVATE
+            )
+        sharedPref.edit().putBoolean(FIRST_TIME_KEY, false).apply()
+        func()
+    }
+
+    companion object {
+        const val SHARED_PREFERENCES_NAME = "MARVEL"
+        const val FIRST_TIME_KEY = "FIRST_TIME"
     }
 
     private fun CharacterDomain.toViewModel(action: ((String) -> Unit)? = null): CharacterViewModel {

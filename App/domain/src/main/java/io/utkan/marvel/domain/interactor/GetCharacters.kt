@@ -20,13 +20,15 @@ class GetCharacters @Inject constructor(
 ) :
     UseCase {
     override fun execute(
+        firstTime: Boolean,
         failure: (Throwable) -> Unit,
         success: (List<CharacterDomain>) -> Unit
     ): () -> Unit {
-        return execute(defaultLimit, failure, success)
+        return execute(firstTime, defaultLimit, failure, success)
     }
 
     override fun execute(
+        firstTime: Boolean,
         limit: Int,
         failure: (Throwable) -> Unit,
         success: (List<CharacterDomain>) -> Unit
@@ -49,8 +51,14 @@ class GetCharacters @Inject constructor(
                     failure(it)
                 },
                 onSuccess = { characters ->
-                    success(characters.map { characterDomainMapper.map(it) }.sortedByDescending { it.viewCount })
-                }
+                    val rawList = characters.map { characterDomainMapper.map(it) }
+                    if (firstTime) {
+                        success(rawList)
+                    } else {
+                        success(rawList.sortedByDescending { it.viewCount })
+                    }
+                },
+                checkViewCount = firstTime.not()
             )
         )
     }

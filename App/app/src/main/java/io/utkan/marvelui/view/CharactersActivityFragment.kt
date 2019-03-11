@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import dagger.android.support.AndroidSupportInjection
 import io.utkan.marvel.presentation.CharactersViewModel
@@ -35,9 +36,19 @@ class CharactersActivityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         charactersAdapter = CharactersAdapter()
         charactersAdapter.characterList = mutableListOf()
         list.adapter = charactersAdapter
+        val lookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return when (position and 0x1) {
+                    1 -> 3
+                    else -> 1
+                }
+            }
+        }
+//        (list.layoutManager as GridLayoutManager).spanSizeLookup = lookup
         go_to_categories.setOnClickListener {
             charactersViewModel.onGotoCategories()
         }
@@ -50,7 +61,7 @@ class CharactersActivityFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        charactersViewModel = ViewModelProviders.of(this, viewModelFactory)
+        charactersViewModel = ViewModelProviders.of(activity!!, viewModelFactory)
             .get(CharactersViewModel::class.java)
 
         charactersViewModel.viewState.observe(
@@ -64,7 +75,6 @@ class CharactersActivityFragment : Fragment() {
                     }
                     is CharactersViewModel.ViewState.CharacterList -> {
                         changeGoToCategoriesButtonVisibility(it.categoriesEnabled)
-//                        charactersAdapter.characterList = it.characters
                         charactersAdapter.updateList(it.characters)
                     }
                     is CharactersViewModel.ViewState.CharacterDetail -> {
